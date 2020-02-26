@@ -124,6 +124,32 @@ class Product extends Model {
 
 	}
 
+	public function getFromUrl($desUrl){
+
+		$sql = new Sql();
+
+		$rows = $sql->select("SELECT * FROM tb_products WHERE desurl = :desurl LIMIT 1", [
+
+			':desurl'=>$desUrl
+
+		]);
+
+		$this->setData($rows[0]);
+
+	}
+
+	public function getCategories(){
+
+		$sql = new Sql();
+
+		return $sql->select("
+			SELECT * FROM tb_categories a INNER JOIN tb_productscategories b ON a.idcategory = b.idcategory WHERE b.idproduct = :idproduct 
+		", [
+			':idproduct'=>$this->getidproduct()
+		]);
+
+	}
+
 
 }
 
